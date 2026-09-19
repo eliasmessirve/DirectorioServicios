@@ -1,5 +1,5 @@
 
-
+// Lista de servicios que se muestran en la página principal
 const servicios = [
   {nombre: "Plomero" , precio:1000 , categoria:"Plomeria", color: "bg-blue-100 text-blue-600" ,descripcion: "Instalaciones, arreglos de fugas, tuberias y capacitaciones", imagen: "/plomero trabajando 3.jpg", telefono: "264000001", ruta: "/servicio/plomero"}, 
   {nombre: "Gasista", precio:5000, categoria:"Gas",color: "bg-yellow-100 text-yellow-600", descripcion: "Instalación de gas, arreglo de fugas y mantenimiento general", imagen: "/24Jgdy6t6_2000x1500__1.jpg", telefono: "264000002", ruta: "/servicio/gasista"},

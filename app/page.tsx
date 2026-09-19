@@ -1,4 +1,7 @@
+// Importamos Link para poder navegar entre las diferentes páginas
+// sin recargar completamente el sitio.
 import Link from "next/link";
+// Importamos la lista de servicios que vamos a mostrar en la página.
 import servicios from "./data/servicios";
 type Props = {
   nombre: string;
@@ -10,6 +13,7 @@ type Props = {
   color: string;
 };
 
+// Componente reutilizable para mostrar cada servicio
 function Tarjeta({
   nombre,
   precio,
@@ -19,7 +23,8 @@ function Tarjeta({
   ruta,
   color
 }: Props) {
-  return (
+  return ( 
+      // Cada tarjeta permite acceder a la página de detalle del servicio
     <div className="bg-gray-200">
       <div className="p-5 rounded-lg bg-white border shadow mx-2 my-2 flex flex-col">
         <img className="w-full h-48 object-cover rounded-md" src={imagen} alt={nombre}/>
@@ -35,7 +40,7 @@ function Tarjeta({
   );
 }
 
-
+// Página principal
 export default function Home() {
   return (
     <div className="bg-white">
@@ -83,6 +88,7 @@ export default function Home() {
   Explora algunos de los servicios mas buscados. Hace clic en cada uno para ver mas detalles y contactar al profesional.
 </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Recorremos el array de servicios y creamos una tarjeta por cada uno */}
          {servicios.map(servicio => (<Tarjeta
         key={servicio.nombre} 
        nombre={servicio.nombre} 
@@ -95,6 +101,7 @@ export default function Home() {
      />))}
       </div>
       </div>
+      {/* Copyright */}
       <footer id="contacto" className="bg-gray-600 text-white mt-5 mx-auto max-w-9xl">
         <div className="max-w-7xl mx-auto px-6 py-3">
           <h2 className="text-2xl font-bold">
