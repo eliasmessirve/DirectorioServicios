@@ -55,7 +55,7 @@ return (
           Telefono: {servicio.telefono}
         </p>
           </div>
-          <a href="{`tel:${servicio.telefono}`}" className="mt-5 bg-blue-500 hover:bg-blue-700 text-white text-center font-bold text-lg py-4 rounded-2xl transition">
+          <a href={`tel:${servicio.telefono}`} className="mt-5 bg-blue-500 hover:bg-blue-700 text-white text-center font-bold text-lg py-4 rounded-2xl transition">
             
             Contactar
           </a>
