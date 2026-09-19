@@ -39,17 +39,18 @@ function Tarjeta({
 export default function Home() {
   return (
     <div className="bg-white">
-      <header className="flex justify-between items-center px-8 py-4">
-        <h1 className="text-2xl font-bold mb-4 py-1">Directorio Servicio</h1>
-        <nav>
-          <ul className="flex space-x-4">
-            <Link href="/">Inicio</Link>
-            <Link href="/servicio">Servicios</Link>
-            <Link href="/">Contacto</Link>
+    <div className="bg-white text-black max-w-7xl mx-auto">
+      <header className="flex justify-between py-4 px-3">
+        <h1 className="text-lg font-bold sm:text-2xl py-1 text-black">Directorio <span className="text-blue-600">Servicio</span></h1>
+        <nav className="flex items-center gap-3">
+          <ul className="flex space-x-3 py-2">
+            <Link href="/" className="text-sm sm:text-base hover:text-blue-700 trasition">Inicio</Link>
+            <Link href="/#servicios" className="text-sm sm:text-base hover:text-blue-700 trasition">Servicios</Link>
+            <Link href="/#contacto" className="text-sm sm:text-base hover:text-blue-700 trasition">Contacto</Link>
           </ul>
         </nav>
       </header>
-      <section
+      <section id="servicios"
         className="relative min-h-[500px] max-w-7xl mx-auto bg-cover bg-center flex items-center"
         style={{ backgroundImage: "url('/part-male-construction-worker.jpg')" }}
       >
@@ -67,7 +68,7 @@ export default function Home() {
           </p>
 
           <Link
-            href="/servicio"
+            href="/#servicios"
             className="bg-blue-600 text-white font-bold px-6 py-3 rounded-full"
           >
             Ver servicios <span aria-hidden="true">→</span>
@@ -81,7 +82,7 @@ export default function Home() {
       <p className="text-gray-600 text-lg mt-2 max-w-2xl px-3">
   Explora algunos de los servicios mas buscados. Hace clic en cada uno para ver mas detalles y contactar al profesional.
 </p>
-      <div className="grid grid-cols-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
          {servicios.map(servicio => (<Tarjeta
         key={servicio.nombre} 
        nombre={servicio.nombre} 
@@ -94,7 +95,24 @@ export default function Home() {
      />))}
       </div>
       </div>
+      <footer id="contacto" className="bg-gray-600 text-white mt-5 mx-auto max-w-9xl">
+        <div className="max-w-7xl mx-auto px-6 py-3">
+          <h2 className="text-2xl font-bold">
+            DirectorioServicios
+          </h2>
+          <p className="text-slate-300 mt-3 max-w-md">
+            Conectamos vecinos con profesionales locales confiables y de calidad.
+          </p>
+          <p className="text-slate-300 mt-6">
+            Contacto: info@derectorioservicios.com
+          </p>
+          <p className="text-slate-400 text-sm mt-10 border-t border-slate-700 pt-6">
+           © 2026 DirectorioServicios. Todos los derechos reservados.
+          </p>
+        </div>
+      </footer>
     </div> 
+    </div>
 
   );
     
