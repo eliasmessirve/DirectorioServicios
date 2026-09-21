@@ -4,18 +4,20 @@ import Link from "next/link";
 // Definimos las propiedades que recibe la página.
 // "nombre" corresponde al nombre del servicio recibido desde la URL.
 type Props = {
-  params: {
+  params: Promise<{
     nombre: string;
-  };
+  }>;
 };
 
 // Buscamos el servicio correspondiente al nombre recibido en la URL.
-export default function Servicio({ params }: Props) {
+export default async function Servicio({ params }: Props) {
+
+  const { nombre } = await params;
 
   // .find() recorre la lista de servicios hasta encontrar
   // uno cuyo nombre coincida con el parámetro de la URL.
   const servicio = servicios.find( 
-    servicio => servicio.nombre.toLowerCase() === params.nombre
+    servicio => servicio.nombre.toLowerCase() === nombre
   );
 
   // Si no encontramos ningún servicio con ese nombre,
