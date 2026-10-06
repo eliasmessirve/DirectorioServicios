@@ -1,6 +1,8 @@
+"use client"
 // Importamos Link para poder navegar entre las diferentes páginas
 // sin recargar completamente el sitio.
 import Link from "next/link";
+import { useState } from "react";
 // Importamos la lista de servicios que vamos a mostrar en la página.
 import servicios from "./data/servicios";
 type Props = {
@@ -31,7 +33,7 @@ function Tarjeta({
         <p className={`font-medium  w-fit px-1 py-1 mt-3 rounded-full inline-block ${color}`}>{categoria}</p>
         <h2 className="text-xl font-bold mt-1">{nombre}</h2>
         <p className="font-semibold mt-1">${precio}</p>  
-        <p className="text-gray-600 text-sm mt-2" flex-1>{descripcion}</p>
+        <p className="text-gray-600 text-sm mt-2 flex-1">{descripcion}</p>
          <Link href={ruta} className="mt-4 w-fit items-center gap-2  border border-blue-600 text-blue-600 px-4 py-2 rounded-full "> Ver Más → <span></span>
     </Link>
       </div>
@@ -42,17 +44,35 @@ function Tarjeta({
 
 // Página principal
 export default function Home() {
+  const [busqueda, setBusqueda] = useState("")
+  const [categoria, setCategoia] = useState("")
+  const serviciosFiltrados = servicios.filter(servicio => servicio.nombre.toLowerCase().includes(busqueda.toLowerCase()) && (categoria === "" || servicio.categoria === categoria) )
   return (
     <div className="bg-white">
     <div className="bg-white text-black max-w-7xl mx-auto">
       <header className="flex justify-between py-4 px-3">
         <h1 className="text-lg font-bold sm:text-2xl py-1 text-black">Directorio <span className="text-blue-600">Servicio</span></h1>
+        <input
+          type="text"
+          placeholder="Buscar"
+          value={busqueda}
+          onChange={(e) => setBusqueda(e.target.value)}
+          className="w-full max-w-md border border-slate-200 rounded-full px-5 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+        />
+     
         <nav className="flex items-center gap-3">
-          <ul className="flex space-x-3 py-2">
-            <Link href="/" className="text-sm sm:text-base hover:text-blue-700 trasition">Inicio</Link>
-            <Link href="/#servicios" className="text-sm sm:text-base hover:text-blue-700 trasition">Servicios</Link>
-            <Link href="/#contacto" className="text-sm sm:text-base hover:text-blue-700 trasition">Contacto</Link>
-          </ul>
+             <div className="flex items-center gap-4">
+                  <button
+                   type="button"
+                   className="bg-blue-600 text-white font-bold px-6 py-3 rounded-full"
+                  >
+                    Categorías ▾
+                 </button>
+
+                <Link href="/#contacto" className="bg-blue-600 text-white font-bold px-6 py-3 rounded-full">
+                 Contacto
+               </Link>
+             </div>
         </nav>
       </header>
       <section id="servicios"
@@ -87,19 +107,28 @@ export default function Home() {
       <p className="text-gray-600 text-lg mt-2 max-w-2xl px-3">
   Explora algunos de los servicios mas buscados. Hace clic en cada uno para ver mas detalles y contactar al profesional.
 </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-        {/* Recorremos el array de servicios y creamos una tarjeta por cada uno */}
-         {servicios.map(servicio => (<Tarjeta
-        key={servicio.nombre} 
-       nombre={servicio.nombre} 
-       precio={servicio.precio}
+      {serviciosFiltrados.length === 0 ? (
+  <div className="w-full flex justify-center py-10">
+    <p className="text-3xl font-semibold text-gray-400">
+      Servicio no Encontrado
+    </p>
+  </div>
+) : (
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+    {serviciosFiltrados.map(servicio => (
+      <Tarjeta
+        key={servicio.nombre}
+        nombre={servicio.nombre}
+        precio={servicio.precio}
         categoria={servicio.categoria}
-       descripcion={servicio.descripcion}
+        descripcion={servicio.descripcion}
         imagen={servicio.imagen}
         ruta={servicio.ruta}
         color={servicio.color}
-     />))}
-      </div>
+      />
+    ))}
+  </div>
+)}
       </div>
       {/* Copyright */}
       <footer id="contacto" className="bg-gray-600 text-white mt-5 mx-auto max-w-9xl">
