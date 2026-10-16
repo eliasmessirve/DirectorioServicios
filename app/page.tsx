@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 // Importamos la lista de servicios que vamos a mostrar en la página.
 import servicios from "./data/servicios";
+import Image from "next/image";
 type Props = {
   nombre: string;
   precio: number;
@@ -45,36 +46,87 @@ function Tarjeta({
 // Página principal
 export default function Home() {
   const [busqueda, setBusqueda] = useState("")
-  const [categoria, setCategoia] = useState("")
+  const [categoria, setCategoria] = useState("")
+  const [categoriaAbierta, setCategoriaAbierta] = useState(false);
   const serviciosFiltrados = servicios.filter(servicio => servicio.nombre.toLowerCase().includes(busqueda.toLowerCase()) && (categoria === "" || servicio.categoria === categoria) )
   return (
     <div className="bg-white">
     <div className="bg-white text-black max-w-7xl mx-auto">
-      <header className="flex justify-between py-4 px-3">
-        <h1 className="text-lg font-bold sm:text-2xl py-1 text-black">Directorio <span className="text-blue-600">Servicio</span></h1>
-        <input
-          type="text"
-          placeholder="Buscar"
-          value={busqueda}
-          onChange={(e) => setBusqueda(e.target.value)}
-          className="w-full max-w-md border border-slate-200 rounded-full px-5 py-3 outline-none focus:ring-2 focus:ring-blue-500"
-        />
-     
-        <nav className="flex items-center gap-3">
-             <div className="flex items-center gap-4">
-                  <button
-                   type="button"
-                   className="bg-blue-600 text-white font-bold px-6 py-3 rounded-full"
-                  >
-                    Categorías ▾
-                 </button>
+      
 
-                <Link href="/#contacto" className="bg-blue-600 text-white font-bold px-6 py-3 rounded-full">
-                 Contacto
-               </Link>
-             </div>
-        </nav>
-      </header>
+<header className="grid grid-cols-2 items-center gap-x-3 gap-y-4 px-4 py-3 sm:flex sm:flex-nowrap sm:justify-between sm:gap-4 sm:px-6 sm:py-4">
+  <Link
+    href="/"
+    className="col-span-2 flex w-full justify-center sm:col-span-1 sm:w-auto sm:flex-none"
+  >
+    <Image
+      src="/DirectorioServiciosLogo.png"
+      alt="Directorio Servicio"
+      width={280}
+      height={90}
+      priority
+      className="h-auto w-52 sm:w-60"
+    />
+  </Link>
+
+  <input
+    type="text"
+    placeholder="Buscar un servicio..."
+    value={busqueda}
+    onChange={(e) => setBusqueda(e.target.value)}
+    className="col-span-2 order-3 w-full min-w-0 rounded-full border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 sm:order-none sm:col-span-1 sm:max-w-sm sm:flex-1 sm:px-5 sm:py-3 sm:text-base"
+  />
+
+  <nav className="col-span-2 order-2 flex w-full items-center gap-3 sm:order-none sm:col-span-1 sm:w-auto sm:shrink-0">
+    <div className="relative flex-1 sm:flex-none">
+      <button
+        type="button"
+        onClick={() => setCategoriaAbierta(!categoriaAbierta)}
+        className="w-full whitespace-nowrap rounded-full bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 sm:w-auto sm:px-5 sm:py-3"
+      >
+        Categorías <span className="ml-1">▾</span>
+      </button>
+
+      {categoriaAbierta && (
+        <div className="absolute left-0 top-full z-50 mt-2 max-h-64 w-56 max-w-[85vw] overflow-y-auto rounded-xl border border-slate-200 bg-white p-2 shadow-lg">
+          <button
+            type="button"
+            onClick={() => {
+              setCategoria("");
+              setCategoriaAbierta(false);
+            }}
+            className="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-blue-50"
+          >
+            Todas las categorías
+          </button>
+
+          {[...new Set(servicios.map((servicio) => servicio.categoria))].map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => {
+                setCategoria(cat);
+                setCategoriaAbierta(false);
+              }}
+              className="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-blue-50"
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <Link
+      href="/contacto"
+      className="flex-1 whitespace-nowrap rounded-full border border-blue-600 bg-white px-4 py-2.5 text-center text-sm font-semibold text-blue-700 transition hover:bg-blue-50 sm:flex-none sm:px-5 sm:py-3"
+    >
+      Contacto
+    </Link>
+  </nav>
+</header>
+
+
       <section id="servicios"
         className="relative min-h-[500px] max-w-7xl mx-auto bg-cover bg-center flex items-center"
         style={{ backgroundImage: "url('/part-male-construction-worker.jpg')" }}
