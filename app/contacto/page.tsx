@@ -5,6 +5,8 @@ import { useState } from "react";
 
 export default function ContactoPage() {
   const [enviado, setEnviado] = useState(false);
+  const [error, setError] = useState("");
+  const [cargando, setCargando] = useState(false);
 
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-12">
@@ -20,9 +22,47 @@ export default function ContactoPage() {
 
         <form
           className="mt-8 space-y-5"
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
-            setEnviado(true);
+            setEnviado(false);
+            setCargando(true);
+            setError("");
+
+            const formulario = e.currentTarget;
+            const datos = new FormData(formulario);
+
+            try {
+              const respuesta = await fetch("/api/contacto", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json", 
+                },
+                body: JSON.stringify({
+                  nombre: datos.get("nombre"),
+                  telefono: datos.get("telefono"),
+                  email: datos.get("email"),
+                  servicio: datos.get("servicio"),
+                  mensaje: datos.get("mensaje"),
+                }),
+              });
+              const resultado = await respuesta.json();
+
+              if (!respuesta.ok) {
+                throw new Error(resultado.error || "No se pudo enviar la solicitud");
+              }
+              setEnviado(true);
+              formulario.reset();
+            }
+            catch (error) {
+              setError(
+                error instanceof Error
+                ? error.message
+                :"Ocurrió un error al enviar la Solicitud"
+              );
+            }
+            finally {
+              setCargando(false);
+            }
           }}
         >
           <div>
@@ -37,9 +77,26 @@ export default function ContactoPage() {
               placeholder="Tu nombre"
             />
           </div>
+            
+          <div>
+            <label htmlFor="email" className="mb-1 block font-medium text-slate-900">
+              Correo electrónico
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              maxLength={254}
+              pattern="(?=(?:\D*\d){10,})[0-9+() -]+"
+              title="Ingresá un correo válido. Ejemplo: nombre@gmail.com"
+              className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-500"
+              placeholder="Ej.: nombre@gmail.com"
+            />
+          </div>
 
           <div>
-            <label htmlFor="telefono" className="mb-1 block font-medium">
+            <label htmlFor="telefono" className="mb-1 block font-medium text-slate-900">
               Teléfono
             </label>
             <input
@@ -47,13 +104,17 @@ export default function ContactoPage() {
               name="telefono"
               type="tel"
               required
+              minLength={10}
+              maxLength={20}
+              pattern="(?=(?:\D*\d){8,})[0-9+() -]+"
+              title="Ingresá un teléfono válido con al menos 8 dígitos."
               className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-500"
-              placeholder="Tu número de contacto"
+              placeholder="Ej.: +54 264 1234567"
             />
           </div>
 
           <div>
-            <label htmlFor="servicio" className="mb-1 block font-medium">
+            <label htmlFor="telefono" className="mb-1 block font-medium text-slate-900">
               Servicio que necesitás
             </label>
             <input
@@ -66,7 +127,7 @@ export default function ContactoPage() {
           </div>
 
           <div>
-            <label htmlFor="mensaje" className="mb-1 block font-medium">
+            <label htmlFor="telefono" className="mb-1 block font-medium text-slate-900">
               Mensaje
             </label>
             <textarea
@@ -79,16 +140,29 @@ export default function ContactoPage() {
             />
           </div>
 
-          <button
-            type="submit"
-            className="w-full rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700"
-          >
-            Enviar solicitud
-          </button>
+          
+            <button
+              type="submit"
+              disabled={cargando}
+              className="w-full rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+               {cargando ? "Enviando..." : "Enviar solicitud"}
+            </button>
+
 
           {enviado && (
             <p className="rounded-lg bg-green-50 p-3 text-green-700">
-              Formulario probado correctamente. Todavía falta conectar el envío.
+            </p>
+          )}
+          {error && (
+             <p role="alert" className="rounded-lg bg-red-50 p-3 text-red-700">
+               {error}
+            </p>
+          )}
+
+          {enviado && (
+           <p role="status" className="rounded-lg bg-green-50 p-3 text-green-700">
+            ¡Solicitud recibida correctamente!
             </p>
           )}
         </form>
