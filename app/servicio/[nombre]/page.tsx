@@ -27,6 +27,8 @@ export default async function Servicio({ params }: Props) {
   }
 
   return (
+      <div className="bg-white">
+    <div className="bg-white text-black max-w-7xl mx-auto"></div>
     <div className="max-w-6xl mx-auto px-6 py-10">
 
       {/* Botón para volver a la página principal */}
@@ -38,7 +40,7 @@ export default async function Servicio({ params }: Props) {
       </Link>
 
       {/* Contenedor principal con la imagen y la información del servicio */}
-      <div className="max-w-7xl mx-auto mt-8 bg-white rounded-3xl shadow-xl p-8 grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div className="max-w-7xl mx-auto mt-8 bg-white rounded-3xl shadow-xl p-8 grid grid-cols-1 md:grid-cols-2 gap-10 ">
 
         {/* Imagen del servicio */}
         <img
@@ -75,19 +77,41 @@ export default async function Servicio({ params }: Props) {
           </div>
 
           {/* Número de teléfono del proveedor */}
-          <div className="bg-blue-500 rounded-lg p-5">
+          <div className="bg-blue-700 rounded-lg p-5">
             <p className="text-xl font-bold text-white">
               Telefono: {servicio.telefono}
             </p>
           </div>
 
-          {/* Botón para contactar mediante el teléfono */}
-          <a
-            href={`tel:${servicio.telefono}`}
-            className="mt-5 bg-blue-500 hover:bg-blue-700 text-white text-center font-bold text-lg py-4 rounded-2xl transition"
-          >
-            Contactar
-          </a>
+          {/* Botón para contactar*/}
+          <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <a
+              href={`tel:${servicio.telefono}`}
+              className="flex min-w-0 items-center justify-center gap-2 rounded-full bg-blue-600 px-5 py-4 text-base font-bold text-white transition hover:bg-blue-700 sm:text-lg"
+            >
+              <img
+                  src="/llamada.svg"
+                  alt=""
+                  aria-hidden="true"
+                  className="h-9 w-9 shrink-0 object-contain"
+                />
+              Llamar
+            </a>
+
+            <a
+              href={`https://wa.me/${String(servicio.telefono).replace(/\D/g, "")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex min-w-0 items-center justify-center gap-2 rounded-full bg-green-600 px-5 py-4 text-base font-bold text-white transition hover:bg-green-700 sm:text-lg"
+            >
+              <img 
+              src="/whatsapp1.svg" 
+              alt="" 
+              className="h-6 w-6 shrink-0 object-contain"/>
+              
+              WhatsApp
+            </a>
+          </div>
 
         </div>
       </div>
@@ -122,6 +146,7 @@ export default async function Servicio({ params }: Props) {
         </div>
       </footer>
 
+    </div>
     </div>
   );
 }

@@ -26,20 +26,32 @@ function Tarjeta({
   ruta,
   color
 }: Props) {
-  return ( 
-      // Cada tarjeta permite acceder a la página de detalle del servicio
-    <div className="bg-gray-200">
-      <div className="p-5 rounded-lg bg-white border shadow mx-2 my-2 flex flex-col">
-        <img className="w-full h-48 object-cover rounded-md" src={imagen} alt={nombre}/>
-        <p className={`font-medium  w-fit px-1 py-1 mt-3 rounded-full inline-block ${color}`}>{categoria}</p>
-        <h2 className="text-xl font-bold mt-1">{nombre}</h2>
-        <p className="font-semibold mt-1">${precio}</p>  
-        <p className="text-gray-600 text-sm mt-2 flex-1">{descripcion}</p>
-         <Link href={ruta} className="mt-4 w-fit items-center gap-2  border border-blue-600 text-blue-600 px-4 py-2 rounded-full "> Ver Más → <span></span>
-    </Link>
+  return (
+    <Link
+      href={ruta}
+      className="group mx-2 my-2 block overflow-hidden rounded-lg bg-white shadow-sm transition-all duration-200 ease-out hover:scale-[1.02] hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+      aria-label={`Ver detalles del servicio ${nombre}`}
+    >
+      <div className="flex h-full flex-col border border-gray-100 rounded-lg p-5">
+        <img
+          className="h-48 w-full rounded-md object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+          src={imagen}
+          alt={nombre}
+        />
+
+        <p className={`mt-3 inline-block w-fit rounded-full px-2 py-1 font-medium ${color}`}>
+          {categoria}
+        </p>
+
+        <h2 className="mt-1 text-xl font-bold">{nombre}</h2>
+
+        <p className="mt-1 font-semibold">${precio}</p>
+
+        <p className="mt-2 flex-1 text-sm text-gray-600">
+          {descripcion}
+        </p>
       </div>
-    
-    </div>
+    </Link>
   );
 }
 
@@ -141,7 +153,7 @@ export default function Home() {
           </h2>
 
           <p className="text-lg my-12">
-            Profesionales y servicios para lo que necesitas
+            Profesionales y servicios para lo que necesites
           </p>
 
           <Link
@@ -166,9 +178,9 @@ export default function Home() {
     </p>
   </div>
 ) : (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 ">
     {serviciosFiltrados.map(servicio => (
-      <Tarjeta
+      <Tarjeta 
         key={servicio.nombre}
         nombre={servicio.nombre}
         precio={servicio.precio}

@@ -2,14 +2,36 @@
 "use client";
 
 import { useState } from "react";
+import Link from 'next/link';
+import Image from 'next/image';
 
 export default function ContactoPage() {
   const [enviado, setEnviado] = useState(false);
   const [error, setError] = useState("");
   const [cargando, setCargando] = useState(false);
+  
 
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-12">
+      <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-5">
+        <Link href="/" aria-label="Volver al inicio">
+          <Image
+            src="/DirectorioServiciosLogo.png"
+            alt="Directorio Servicio"
+            width={210}
+            height={80}
+            priority
+            className="h-auto w-[170px] sm:w-[210px]"
+          />
+        </Link>
+
+        <Link
+          href="/"
+          className="rounded-full border border-blue-600 px-5 py-2.5 font-semibold text-blue-600 transition hover:bg-blue-600 hover:text-white"
+        >
+          ← Volver
+        </Link>
+      </header>
       <div className="mx-auto max-w-2xl rounded-2xl bg-white p-6 shadow-sm sm:p-8">
         <h1 className="text-3xl font-bold text-slate-900">
           Contactanos
@@ -167,6 +189,7 @@ export default function ContactoPage() {
           )}
         </form>
       </div>
+      
     </main>
   );
 }
