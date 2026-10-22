@@ -16,9 +16,16 @@ export default async function Servicio({ params }: Props) {
 
   // .find() recorre la lista de servicios hasta encontrar
   // uno cuyo nombre coincida con el parámetro de la URL.
-  const servicio = servicios.find( 
-    servicio => servicio.nombre.toLowerCase() === nombre
-  );
+  const normalizarTexto = (texto: string) =>
+  texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+
+const servicio = servicios.find(
+  servicio => normalizarTexto(servicio.nombre) === normalizarTexto(nombre)
+);
 
   // Si no encontramos ningún servicio con ese nombre,
   // mostramos un mensaje de error.
