@@ -60,7 +60,30 @@ export default function Home() {
   const [busqueda, setBusqueda] = useState("")
   const [categoria, setCategoria] = useState("")
   const [categoriaAbierta, setCategoriaAbierta] = useState(false);
-  const serviciosFiltrados = servicios.filter(servicio => servicio.nombre.toLowerCase().includes(busqueda.toLowerCase()) && (categoria === "" || servicio.categoria === categoria) )
+ 
+  const normalizarTexto = (texto: string) =>
+  texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+  const serviciosFiltrados = servicios.filter((servicio) => {
+  const termino = normalizarTexto(busqueda);
+  const palabrasBuscables = [
+    servicio.nombre,
+    servicio.categoria,
+    servicio.descripcion,
+    ...(servicio.sinonimos ?? []),
+  ];
+  const coincideBusqueda = palabrasBuscables.some((palabra) =>
+    normalizarTexto(palabra).includes(termino)
+  );
+  const coincideCategoria =
+    categoria === "" || servicio.categoria === categoria;
+
+  return coincideBusqueda && coincideCategoria;
+});
+
   return (
     <div className="bg-white">
     <div className="bg-white text-black max-w-7xl mx-auto">
